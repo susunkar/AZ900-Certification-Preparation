@@ -1,0 +1,7 @@
+SECRET_KEY='some very long key here'
+USERNAME='admin'
+PASSWORD='default'
+
+
+
+
