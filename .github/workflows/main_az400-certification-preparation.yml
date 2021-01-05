@@ -22,9 +22,11 @@ jobs:
 
     - name: Install Python dependencies
       run: |
-        python3 -m venv env
+        python -m venv env
         .\env\Scripts\activate
-        pip install -r requirements.txt
+        pip install -r ./AzureCert-flash-cards/requirements.txt
+        pip install flask
+        $env:FLASK_APP="./AzureCert-flash-cards/flash_cards.py"
 
     - name: Zip the application files
       run: Compress-Archive .\* app.zip
@@ -35,4 +37,4 @@ jobs:
         app-name: 'az400-certification-preparation'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_780959fc0ab545d98b430a36a160ea72 }}
-        package: '.\myapp.zip'
+        package: '.\app.zip'
