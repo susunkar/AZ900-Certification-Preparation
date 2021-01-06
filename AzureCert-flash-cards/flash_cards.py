@@ -4,9 +4,13 @@ import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, flash
 
-import sys
-reload(sys)
-sys.setdefaultencoding("utf-8")
+#Py2 code
+# import sys
+# reload(sys)
+# sys.setdefaultencoding("utf-8")
+
+#Py3 Code
+from importlib import reload
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -211,12 +215,11 @@ def memorize(card_type, card_id):
         flash("You've learned all the " + card_type + " cards.")
         return redirect(url_for('cards'))
     short_answer = (len(card['back']) < 9999)
-    image = b64encode(card['back']).decode("utf-8")
     textCardBack = ""
     if short_answer == True:
         textCardBack = card['back']
     else:
-        textCardBack = image
+        textCardBack = b64encode(card['back']).decode("utf-8")
     return render_template('memorize.html',
                            card=card,
                            card_type=card_type,
@@ -291,4 +294,5 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1')
+    from waitress import serve
+    serve(app, host="0.0.0.0")
